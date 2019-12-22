@@ -4,6 +4,24 @@ const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const keys = require("./config/keys.js");
+require("./models/User.js");
+require("./services/passport.js");
+
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    //The list of keys to use to sign & verify cookie values. Set cookies are always signed with keys[0], while the other keys are valid for verification, allowing for key rotation.
+    keys: [keys.cookieKey]
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//these should be loaded after middlewares
+
+require("./routes/authRoutes")(app);
+
 mongoose
   .connect(keys.mongoURI, {
     useNewUrlParser: true,
@@ -16,23 +34,6 @@ mongoose
   .catch(e => {
     console.error(e.message);
   });
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    //The list of keys to use to sign & verify cookie values. Set cookies are always signed with keys[0], while the other keys are valid for verification, allowing for key rotation.
-    keys: [keys.cookieKey]
-  })
-);
-
-require("./models/User.js");
-require("./services/passport.js");
-//these should be loaded after middlewares
-
-require("./routes/authRoutes")(app);
 
 // if (process.env.NODE_ENV === "test") {
 //   mongoose

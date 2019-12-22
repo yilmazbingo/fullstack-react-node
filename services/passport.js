@@ -9,7 +9,6 @@ const User = mongoose.model("users");
 //user is what found in the db
 //we stuffed the id into the cookie
 passport.serializeUser((user, done) => {
-  console.log("done", done);
   done(null, user.id);
 });
 
