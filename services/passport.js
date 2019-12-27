@@ -24,17 +24,17 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id }).then(existingUser => {
-        if (existingUser) {
-          done(null, existingUser);
-        } else {
-          //this creates single model instance which is a record inside of our collection
-          new User({ googleId: profile.id })
-            .save()
-            .then(user => done(null, user));
-        }
-      });
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        done(null, existingUser);
+      } else {
+        //this creates single model instance which is a record inside of our collection
+        const user = await new User({ googleId: profile.id });
+        user.save();
+        done(null, user);
+      }
     }
   )
 );
