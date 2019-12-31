@@ -3,6 +3,44 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Payments from "./Payments";
 
+// class Header extends Component {
+//   renderContent() {
+//     switch (this.props.auth) {
+//       case null:
+//         return;
+//       case false:
+//         return (
+//           <li className="right">
+//             <a href="/auth/google">Login with google</a>
+//           </li>
+//         );
+//       default:
+//         return [
+//           <li key="1">
+//             <Payments />
+//           </li>,
+//           <li keys="3" style={{ margin: "0 10px" }}>
+//             Credits:{this.props.auth.credits}
+//           </li>,
+
+//           <li key="2">
+//             <a href="/api/logout">Logout</a>
+//           </li>
+//         ];
+//     }
+//   }
+//   render() {
+//     return (
+//       <nav>
+//         <div className="nav-wrapper">
+//           <Link to={this.props.auth ? "/surveys" : "/"}>Emaily</Link>
+//           <ul className="right">{this.renderContent()}</ul>
+//         </div>
+//       </nav>
+//     );
+//   }
+// }
+
 class Header extends Component {
   renderContent() {
     switch (this.props.auth) {
@@ -10,8 +48,8 @@ class Header extends Component {
         return;
       case false:
         return (
-          <li className="right">
-            <Link to="/auth/google">Login</Link>
+          <li>
+            <a href="/auth/google">Login With Google</a>
           </li>
         );
       default:
@@ -19,28 +57,32 @@ class Header extends Component {
           <li key="1">
             <Payments />
           </li>,
-          <li keys="3" style={{ margin: "0 10px" }}>
-            Credits:{this.props.auth.credits}
+          <li key="3" style={{ margin: "0 10px" }}>
+            Credits: {this.props.auth.credits}
           </li>,
-
           <li key="2">
             <a href="/api/logout">Logout</a>
           </li>
         ];
     }
   }
+
   render() {
     return (
       <nav>
         <div className="nav-wrapper">
-          <Link to={this.props.auth ? "/surveys" : "/"}>Logo</Link>
+          <Link
+            to={this.props.auth ? "/surveys" : "/"}
+            className="left brand-logo"
+          >
+            Emaily
+          </Link>
           <ul className="right">{this.renderContent()}</ul>
         </div>
       </nav>
     );
   }
 }
-
 //has access to entire state object
 //pulls the part of state and pass it to Header as prop
 const mapStateToProps = ({ auth }) => {
