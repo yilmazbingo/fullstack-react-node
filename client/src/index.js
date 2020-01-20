@@ -10,7 +10,8 @@ import reduxThunk from "redux-thunk";
 import logger from "redux-logger";
 
 import * as serviceWorker from "./serviceWorker";
-
+import axios from "axios";
+window.axios = axios;
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk, logger));
 
 ReactDOM.render(
