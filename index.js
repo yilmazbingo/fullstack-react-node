@@ -6,6 +6,7 @@ const passport = require("passport");
 const keys = require("./config/keys.js");
 const bodyParser = require("body-parser");
 require("./models/User.js");
+require("./models/Survey.js");
 require("./services/passport.js");
 
 app.use(bodyParser.json());
@@ -16,7 +17,8 @@ app.use(
     keys: [keys.cookieKey]
   })
 );
-
+const a = require("./services/Mailer");
+console.log("", a);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -24,6 +26,7 @@ app.use(passport.session());
 //they both returns functions
 require("./routes/authRoutes")(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoute")(app);
 
 mongoose
   .connect(keys.mongoURI, {
